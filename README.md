@@ -1,4 +1,4 @@
-# Zamp outreach pipeline
+# Outreach pipeline
 
 From a prospect to a researched, personalised cold-email draft that a person reviews before anything is sent.
 
