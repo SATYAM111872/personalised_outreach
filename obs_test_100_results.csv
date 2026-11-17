@@ -1,0 +1,104 @@
+﻿row,run_id,company,name,role,looked_up,status,rounds,subject,error,seconds
+1,40,Paytm,Vijay Shekhar Sharma,Founder & CEO,role: found,drafted,3,Sustainable profitability for Paytm finance operations,,85.0
+2,41,CRED,Kunal Shah,Founder,role: found,drafted,1,Scaling finance operations at CRED,,50.4
+3,42,Zerodha,Nithin Kamath,chief executive officer (CEO),role: found,drafted,1,Scaling instant fund withdrawals at Zerodha,,51.2
+4,43,Freshworks,Girish Mathrubootham,Founder and Executive Chairman,role: found,drafted,1,Freshworks Q3 earnings and finance operations,,50.9
+5,44,Infosys,Salil Parekh,chief executive officer and managing director,role: found,drafted,1,Infosys acquisition and finance operations scale,,51.7
+6,45,Swiggy,Sriharsha Majety,co-founder and chief executive officer (CEO),role: found,drafted,1,Automating Swiggy finance operations as volume scales,,63.8
+7,46,Meesho,Vidit Aatrey,CEO,role: found,drafted,1,Scaling Meesho's finance operations,,61.7
+8,47,Groww,Lalit Keshre,Co-Founder and CEO,role: found,drafted,1,Scaling finance operations after the Fisdom acquisition,,50.1
+9,48,PhonePe,Sameer Nigam,Co-Founder & CEO,role: found,drafted,1,Scaling finance operations for PhonePe IPO,,102.8
+10,49,Zepto,Aadit Palicha,CEO,role: found,drafted,1,Improving Zepto unit economics,,59.1
+11,50,Stripe,Patrick Collison,chief executive officer,role: found,drafted,1,Scaling finance operations at Stripe,,44.2
+12,51,Wipro,Srinivas Pallia,Chief Executive Officer and Managing Director,role: found,drafted,1,Managing integration finance operations at Wipro,,44.8
+13,52,HCLTech,C Vijayakumar,CEO & Managing Director,role: found,drafted,2,Scaling HCLTech finance operations during restructuring,,95.0
+14,53,Tata Consultancy Services,K Krithivasan,CEO & MD,role: found,drafted,1,Scaling finance operations at Tata Consultancy Services,,63.2
+15,54,Reliance Industries,Srikanth Venkatachari,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Reliance Industries,,40.4
+16,55,Tata Motors,PB Balaji,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Jaguar Land Rover,,63.8
+17,56,Mahindra & Mahindra,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Mahindra & Mahindra in the search results. Add the name and run again.,11.9
+18,57,Larsen & Toubro,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Larsen & Toubro in the search results. Add the name and run again.,15.6
+19,58,HDFC Bank,Srinivasan Vaidyanathan,Chief Financial Officer,name: found,flagged,3,Automating AP approvals and month-end close,"Generic draft: no personalised hook was found. No signal reached R >= 2 after 3 research round(s) (85 sources, 2 signals). Add notes or a website and run again.",106.8
+20,59,ICICI Bank,Anindya Banerjee,Chief Financial Officer,name: found,drafted,2,Scaling ICICI Bank finance operations with AI,,81.7
+21,60,Axis Bank,Rajeev Mantri,Chief Financial Officer,name: found,drafted,1,Scaling Axis Bank loan and card volume,,50.6
+22,61,Kotak Mahindra Bank,Devang Gheewalla,Chief Financial Officer,name: found,drafted,1,Automating finance operations post acquisition,,45.7
+23,62,Bajaj Finance,Sandeep Jain,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Bajaj Finance,,39.5
+24,63,Hindustan Unilever,Niranjan Gupta,Chief Financial Officer,name: found,drafted,1,Hindustan Unilever Q2 sales growth scaling AP,,57.9
+25,64,ITC Limited,Supratim Dutta,Chief Financial Officer,name: found,drafted,1,Scaling finance operations after the Happiest Minds acquisition,,138.1
+26,65,Nestle India,Edouard Mac Nab,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Nestle India,,144.2
+27,66,Asian Paints,R. J. Jeyamurugan,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Asian Paints,,150.3
+28,67,Titan Company,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Titan Company in the search results. Add the name and run again.,33.9
+29,68,Maruti Suzuki,Arnab Roy,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Maruti Suzuki,,146.5
+30,69,Sun Pharma,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Sun Pharma in the search results. Add the name and run again.,30.4
+31,70,Dr. Reddy's Laboratories,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Dr. Reddy's Laboratories in the search results. Add the name and run again.,29.7
+32,71,Cipla,Ashish Adukia,Chief Financial Officer,name: found,drafted,1,Scaling finance operations post-acquisition at Cipla,,140.2
+33,72,Tech Mahindra,Rohit Anand,Chief Financial Officer,name: found,drafted,1,Scaling Tech Mahindra's post-acquisition finance operations,,139.6
+34,73,Adani Enterprises,Jugeshinder Singh,Chief Financial Officer,name: found,drafted,1,Scaling Adani Enterprises finance operations for growth,,140.5
+35,74,Zomato,Akshant Goyal,Chief Financial Officer,name: found,drafted,1,Scaling Zomato finance operations for Blinkit expansion,,147.1
+36,75,Nykaa,P Ganesh,Chief Financial Officer,name: found,drafted,1,Automating finance operations post-acquisition at Nykaa,,155.1
+37,76,Lenskart,Abhishek Gupta,Chief Financial Officer,name: found,drafted,1,Scaling Lenskart finance operations,,140.2
+38,77,Razorpay,Arpit Chug,Chief Financial Officer,name: found,drafted,1,Scaling cross-border payments at Razorpay,,142.2
+39,78,BigBasket,Manish Bajoria,Chief Financial Officer,name: found,drafted,1,BigBasket staple food offerings expansion,,143.0
+40,79,Ather Energy,Sohil Parekh,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Ather Energy,,130.0
+41,80,Mamaearth,Ramanpreet Sohi,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Mamaearth,,133.7
+42,81,Urban Company,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Urban Company in the search results. Add the name and run again.,29.3
+43,82,Delhivery,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Delhivery in the search results. Add the name and run again.,28.4
+44,83,Ola Electric,Deepak Rastogi,Chief Financial Officer,name: found,drafted,1,AI digital employees for Ola Electric finance,,126.8
+45,84,Policybazaar,Mandeep Mehta,Chief Financial Officer,name: found,drafted,1,Slowing hiring at Policybazaar,,151.3
+46,85,Swiggy,,Head of Finance Operations,name: not found,needs_research,,,Could not find the Head of Finance Operations of Swiggy in the search results. Add the name and run again.,34.2
+47,86,Flipkart,,Head of Accounts Payable,name: not found,needs_research,,,Could not find the Head of Accounts Payable of Flipkart in the search results. Add the name and run again.,36.0
+48,87,Amazon India,,Head of Accounts Payable,name: not found,needs_research,,,Could not find the Head of Accounts Payable of Amazon India in the search results. Add the name and run again.,30.5
+49,88,Myntra,Abhishek Gupta,Head of Finance,name: found,drafted,1,Scaling Myntra finance operations,,149.1
+50,89,Cars24,Shivanshu Makkar,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Cars24,,144.9
+51,90,Dream11,Navin Agarwal,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Dream11,,144.5
+52,91,Dunzo,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Dunzo in the search results. Add the name and run again.,28.0
+53,92,Pine Labs,Sameer Kamath,Chief Financial Officer,name: found,drafted,1,Pine Labs partnership and transaction volume growth,,136.8
+54,93,Juspay,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Juspay in the search results. Add the name and run again.,27.8
+55,94,Cashfree Payments,Sameer Gandhi,Head of Finance,name: found,drafted,1,Scaling Cashfree Payments cross-border operations,,143.7
+56,95,Zoho,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Zoho in the search results. Add the name and run again.,27.0
+57,96,Freshworks,Tyler Sloat,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Freshworks,,121.6
+58,97,Chargebee,Mike Beach,Chief Financial Officer,name: found,drafted,1,Scaling finance ops at Chargebee,,130.3
+59,98,Postman,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Postman in the search results. Add the name and run again.,29.4
+60,99,BrowserStack,Niranjan Chavan,Head of Finance,name: found,drafted,1,Scaling finance operations at BrowserStack,,133.4
+61,100,Uber,Balaji Krishnamurthy,Chief Financial Officer,name: found,drafted,1,Scaling Uber's finance operations after Zoox integration,,125.0
+62,101,Airbnb,Ellie Mertz,Chief Financial Officer,name: found,drafted,2,Scaling Airbnb finance operations,,220.3
+63,102,DoorDash,Ravi Inukonda,Chief Financial Officer,name: found,drafted,1,Scaling finance operations for DoorDash,,138.8
+64,103,Instacart,Emily Reuter,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Instacart,,129.7
+65,104,Block,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Block in the search results. Add the name and run again.,31.6
+66,105,Shopify,Russ Jones,Chief Financial Officer,name: found,generic,3,Automating finance operations at Shopify,"Generic draft: no personalised hook was found. No signal reached R >= 2 after 3 research round(s) (72 sources, 3 signals). Add notes or a website and run again.",275.4
+67,106,Stripe,Steffan Tomlinson,Chief Financial Officer,name: found,drafted,1,Scaling finance operations post-acquisition at Stripe,,145.8
+68,107,Wise,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Wise in the search results. Add the name and run again.,27.2
+69,108,Revolut,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Revolut in the search results. Add the name and run again.,32.1
+70,109,Klarna,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Klarna in the search results. Add the name and run again.,29.3
+71,110,Adyen,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Adyen in the search results. Add the name and run again.,26.5
+72,111,Coinbase,Alesia Haas,Chief Financial Officer,name: found,drafted,1,Coinbase finance operations and leadership shuffle,,137.7
+73,112,Robinhood,Shiv Verma,Chief Financial Officer,name: found,drafted,1,Automating finance operations at Robinhood,,150.4
+74,113,Plaid,Guy Bourgeois,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Plaid,,145.1
+75,114,Brex,Erica Dorfman,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Brex,,133.5
+76,115,Ramp,William Petrie,Chief Financial Officer,name: found,drafted,1,Scaling Ramp finance operations with Zamp,,141.6
+77,116,Rippling,Giovanni Galassi,Head of Finance,name: found,drafted,1,Scaling Rippling finance operations,,137.1
+78,117,Notion,Rama Katkar,Head of Finance,name: found,drafted,1,Scaling finance operations at Notion,,134.0
+79,118,Canva,Kelly Steckelberg,Chief Financial Officer,name: found,drafted,1,AI digital employees for Canva finance operations,,127.7
+80,119,Atlassian,James Chuong,Chief Financial Officer,name: found,drafted,1,Scaling finance operations at Atlassian,,142.6
+81,120,Zoom,Michelle Chang,Chief Financial Officer,name: found,drafted,1,Zoom finance operations and transaction volume,,138.6
+82,121,Dropbox,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Dropbox in the search results. Add the name and run again.,33.1
+83,122,Twilio,Aidan Viggiano,Chief Financial Officer,name: found,drafted,1,Twilio third-quarter 2026 results,,151.2
+84,123,Datadog,David Obstler,Chief Financial Officer,name: found,drafted,1,Scaling Datadog finance operations efficiently,,155.4
+85,124,Snowflake,Doug Mitchell,Chief Financial Officer,name: found,flagged,3,Scaling finance operations at Snowflake,"Generic draft: no personalised hook was found. No signal reached R >= 2 after 3 research round(s) (80 sources, 4 signals). Add notes or a website and run again.",307.2
+86,125,Workday,Zane Rowe,Chief Financial Officer,name: found,flagged,1,Measuring AI value in finance,,155.5
+87,126,Mindbody,Tom Aveston,Chief Financial Officer,name: found,drafted,1,Automating finance operations post-merger at Mindbody,,150.2
+88,127,Amgen,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Amgen in the search results. Add the name and run again.,30.5
+89,128,Wio Bank,Prakash Sunkara,Chief Financial Officer,name: found,drafted,1,Scaling Wio Bank finance operations post-partnership,,63.1
+90,129,Careem,Kal Desai,Chief Financial Officer,name: found,drafted,2,Scaling Careem grocery delivery finance operations,,91.4
+91,130,Noon,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Noon in the search results. Add the name and run again.,5.9
+92,131,Talabat,Khaled Al Fakesh,Chief Financial Officer,name: found,drafted,1,Talabat's InstaShop acquisition and finance operations,,46.7
+93,132,Grab,Peter Oey,Chief Financial Officer,name: found,drafted,1,Scaling Grab finance operations,,57.6
+94,133,Gojek,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Gojek in the search results. Add the name and run again.,7.2
+95,134,Sea Limited,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Sea Limited in the search results. Add the name and run again.,7.8
+96,135,Lazada,,Head of Finance,name: not found,needs_research,,,Could not find the Head of Finance of Lazada in the search results. Add the name and run again.,8.7
+97,136,Zalando,Anna Dimitrova,Chief Financial Officer,name: found,drafted,1,AI digital employees for Zalando finance operations,,50.8
+98,137,Spotify,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Spotify in the search results. Add the name and run again.,11.7
+99,138,Zzyzx Test Widgets Pvt Ltd,,Chief Financial Officer,name: not found,needs_research,,,Could not find the Chief Financial Officer of Zzyzx Test Widgets Pvt Ltd in the search results. Add the name and run again.,10.4
+100,139,Qwertyuiop Fake Logistics Inc,Jane Doe,,role: not found,needs_research,,,Could not find Jane Doe's role at Qwertyuiop Fake Logistics Inc in the search results. Add the role and run again.,10.9
+101,140,Acme Imaginary Foods Ltd,,Head of Accounts Payable,name: not found,needs_research,,,Could not find the Head of Accounts Payable of Acme Imaginary Foods Ltd in the search results. Add the name and run again.,13.3
+102,141,Urban Company,,Head of Finance Operations,name: not found,needs_research,,,Could not find the Head of Finance Operations of Urban Company in the search results. Add the name and run again.,19.5
+103,142,Groww,,Head of Accounts Payable,name: not found,needs_research,,,Could not find the Head of Accounts Payable of Groww in the search results. Add the name and run again.,8.9

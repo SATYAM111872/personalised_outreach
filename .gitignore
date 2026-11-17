@@ -5,3 +5,6 @@
 .venv/
 __pycache__/
 data/
+
+# eval run databases (metrics.json, cases.csv and report.md are kept)
+evals/results/*/runs.db

@@ -1,0 +1,413 @@
+{
+  "label": "baseline",
+  "n_cases": 50,
+  "n_runs": 50,
+  "outcome": {
+    "status_counts": {
+      "drafted": 34,
+      "needs_research": 16
+    },
+    "status_pct": {
+      "drafted": 68.0,
+      "needs_research": 32.0
+    },
+    "needs_research_pct": 32.0,
+    "failed_pct": 0.0,
+    "generic_pct": 0.0,
+    "flagged_pct": 0.0,
+    "drafted_pct": 68.0,
+    "harness_error_pct": 0.0,
+    "usable_draft_pct": 68.0,
+    "by_category": {
+      "both": {
+        "drafted": 4
+      },
+      "name_only": {
+        "drafted": 8
+      },
+      "negative": {
+        "needs_research": 5
+      },
+      "notes": {
+        "needs_research": 2,
+        "drafted": 1
+      },
+      "role_only": {
+        "drafted": 21,
+        "needs_research": 9
+      }
+    }
+  },
+  "expectations": {
+    "n": 5,
+    "pass_pct": 100.0
+  },
+  "non_negative_cases": {
+    "n": 45,
+    "needs_research_pct": 24.4,
+    "failed_pct": 0.0,
+    "draft_pct": 75.6
+  },
+  "latency": {
+    "end_to_end_s": {
+      "n": 50,
+      "mean": 62.93,
+      "p50": 62.2,
+      "p95": 125.89,
+      "max": 134.5
+    },
+    "components_s": {
+      "Input": {
+        "n": 50,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "share_of_e2e_pct": 0.0
+      },
+      "Find prospect": {
+        "n": 46,
+        "mean": 17.29,
+        "p50": 11.87,
+        "p95": 33.72,
+        "max": 34.57,
+        "share_of_e2e_pct": 25.3
+      },
+      "Plan queries": {
+        "n": 35,
+        "mean": 0.1,
+        "p50": 0.03,
+        "p95": 0.05,
+        "max": 2.54,
+        "share_of_e2e_pct": 0.1
+      },
+      "Gather sources": {
+        "n": 35,
+        "mean": 48.96,
+        "p50": 44.1,
+        "p95": 83.72,
+        "max": 88.43,
+        "share_of_e2e_pct": 54.5
+      },
+      "Extract signals": {
+        "n": 35,
+        "mean": 8.48,
+        "p50": 7.89,
+        "p95": 18.65,
+        "max": 23.09,
+        "share_of_e2e_pct": 9.4
+      },
+      "Score & pick hook": {
+        "n": 35,
+        "mean": 3.35,
+        "p50": 2.39,
+        "p95": 7.33,
+        "max": 8.25,
+        "share_of_e2e_pct": 3.7
+      },
+      "Draft": {
+        "n": 34,
+        "mean": 3.08,
+        "p50": 1.79,
+        "p95": 7.91,
+        "max": 13.4,
+        "share_of_e2e_pct": 3.3
+      },
+      "Check draft": {
+        "n": 34,
+        "mean": 3.04,
+        "p50": 1.81,
+        "p95": 7.85,
+        "max": 9.53,
+        "share_of_e2e_pct": 3.3
+      }
+    },
+    "sum_of_component_means_s": 62.69,
+    "unaccounted_mean_s": 0.25,
+    "wall_per_case_s": {
+      "n": 50,
+      "mean": 62.99,
+      "p50": 62.25,
+      "p95": 125.99,
+      "max": 134.5
+    },
+    "per_call_s": {
+      "llm": {
+        "DraftParts": {
+          "n": 35,
+          "mean": 2.07,
+          "p50": 1.66,
+          "p95": 3.62,
+          "max": 9.28
+        },
+        "Extraction": {
+          "n": 41,
+          "mean": 5.18,
+          "p50": 4.22,
+          "p95": 9.71,
+          "max": 15.4
+        },
+        "Grounding": {
+          "n": 35,
+          "mean": 2.18,
+          "p50": 1.69,
+          "p95": 4.52,
+          "max": 9.44
+        },
+        "Lookup": {
+          "n": 46,
+          "mean": 2.72,
+          "p50": 2.45,
+          "p95": 5.89,
+          "max": 8.26
+        },
+        "QueryPlan": {
+          "n": 1,
+          "mean": 2.39,
+          "p50": 2.39,
+          "p95": 2.39,
+          "max": 2.39
+        },
+        "Ratings": {
+          "n": 35,
+          "mean": 2.28,
+          "p50": 2.07,
+          "p95": 4.15,
+          "max": 6.52
+        }
+      },
+      "search": {
+        "bing-rss": {
+          "n": 22,
+          "mean": 11.88,
+          "p50": 8.28,
+          "p95": 33.01,
+          "max": 45.25
+        },
+        "ddgs-news": {
+          "n": 79,
+          "mean": 4.55,
+          "p50": 1.4,
+          "p95": 20.94,
+          "max": 22.56
+        },
+        "ddgs-web": {
+          "n": 304,
+          "mean": 7.58,
+          "p50": 4.92,
+          "p95": 25.71,
+          "max": 48.34
+        },
+        "google-news-rss": {
+          "n": 226,
+          "mean": 14.78,
+          "p50": 8.76,
+          "p95": 46.21,
+          "max": 57.72
+        }
+      },
+      "fetch": {
+        "n": 129,
+        "mean": 1.32,
+        "p50": 1.02,
+        "p95": 2.68,
+        "max": 10.9
+      },
+      "embedding": {
+        "n": 18,
+        "mean": 3.13,
+        "p50": 2.98,
+        "p95": 4.19,
+        "max": 6.12
+      }
+    }
+  },
+  "tokens": {
+    "per_run_in": {
+      "n": 50,
+      "mean": 9257.0,
+      "p50": 10256.0,
+      "p95": 15924.0,
+      "max": 18524.0
+    },
+    "per_run_out": {
+      "n": 50,
+      "mean": 1648.0,
+      "p50": 1661.0,
+      "p95": 3875.0,
+      "max": 5568.0
+    },
+    "total_in": 462864,
+    "total_out": 82404,
+    "components": {
+      "Find prospect": {
+        "calls": 46,
+        "runs": 46,
+        "in_per_call": 3151.0,
+        "out_per_call": 329.0,
+        "in_per_run": 3151.0,
+        "out_per_run": 329.0,
+        "share_of_tokens_pct": 29.4
+      },
+      "Plan queries": {
+        "calls": 1,
+        "runs": 1,
+        "in_per_call": 902.0,
+        "out_per_call": 299.0,
+        "in_per_run": 902.0,
+        "out_per_run": 299.0,
+        "share_of_tokens_pct": 0.2
+      },
+      "Extract signals": {
+        "calls": 41,
+        "runs": 35,
+        "in_per_call": 5912.0,
+        "out_per_call": 1171.0,
+        "in_per_run": 6925.0,
+        "out_per_run": 1371.0,
+        "share_of_tokens_pct": 53.3
+      },
+      "Score & pick hook": {
+        "calls": 35,
+        "runs": 34,
+        "in_per_call": 736.0,
+        "out_per_call": 201.0,
+        "in_per_run": 757.0,
+        "out_per_run": 207.0,
+        "share_of_tokens_pct": 6.0
+      },
+      "Draft": {
+        "calls": 35,
+        "runs": 34,
+        "in_per_call": 737.0,
+        "out_per_call": 147.0,
+        "in_per_run": 759.0,
+        "out_per_run": 151.0,
+        "share_of_tokens_pct": 5.7
+      },
+      "Check draft": {
+        "calls": 35,
+        "runs": 34,
+        "in_per_call": 660.0,
+        "out_per_call": 195.0,
+        "in_per_run": 679.0,
+        "out_per_run": 201.0,
+        "share_of_tokens_pct": 5.5
+      }
+    },
+    "ok_attempts_without_token_count": 0,
+    "cost": null
+  },
+  "reliability": {
+    "llm_attempts": 228,
+    "llm_ok_pct": 84.6,
+    "llm_retry_pct": 15.4,
+    "llm_error_pct": 0.0,
+    "llm_deadline_pct": 0.0,
+    "llm_empty_pct": 0.0,
+    "llm_attempts_per_run": 4.56,
+    "search": {
+      "calls": 633,
+      "empty_pct": 0.0,
+      "failed_pct": 0.3,
+      "fallback_pct": 59.0,
+      "backend_mix_pct": {
+        "ddgs-web": 48.2,
+        "google-news-rss": 35.8,
+        "ddgs-news": 12.5,
+        "bing-rss": 3.5
+      }
+    },
+    "fetch": {
+      "calls": 164,
+      "ok_pct": 78.7,
+      "error_pct": 17.7
+    },
+    "embedding": {
+      "calls": 41,
+      "ok_pct": 43.9,
+      "keyword_fallback_pct": 56.1
+    },
+    "runs_with_any_tool_failure_pct": 64.0
+  },
+  "funnel_mean_per_run": {
+    "results": 65.1,
+    "kept": 34.7,
+    "pages_ok": 1.1,
+    "signals": 3.8,
+    "dropped": 0.5,
+    "passing": 2.5
+  },
+  "rounds": {
+    "distribution": {
+      "1": 30,
+      "2": 4,
+      "3": 1
+    },
+    "needed_round2_plus_pct": 14.3,
+    "winning_round": {
+      "1": 30,
+      "2": 4
+    },
+    "search_calls_per_run": 12.7
+  },
+  "lookup": {
+    "n": 46,
+    "found_pct": 67.4
+  },
+  "hooks": {
+    "type_counts": {
+      "leadership_change": 10,
+      "acquisition": 8,
+      "other": 6,
+      "expansion": 5,
+      "funding": 2,
+      "product_launch": 1,
+      "hiring": 1,
+      "partnership": 1
+    },
+    "score": {
+      "n": 34,
+      "mean": 0.406,
+      "p50": 0.373,
+      "p95": 0.595,
+      "max": 0.667
+    }
+  },
+  "quality": {
+    "drafts": 34,
+    "first_attempt_checks": {
+      "length": {
+        "pass_pct": 100.0,
+        "n": 34
+      },
+      "banned_phrases": {
+        "pass_pct": 100.0,
+        "n": 34
+      },
+      "names": {
+        "pass_pct": 100.0,
+        "n": 34
+      },
+      "one_ask": {
+        "pass_pct": 100.0,
+        "n": 34
+      },
+      "grounding": {
+        "pass_pct": 97.1,
+        "n": 34
+      }
+    },
+    "redraft_pct": 2.9,
+    "flagged_pct": 0.0,
+    "body_words": {
+      "n": 34,
+      "mean": 88.0,
+      "p50": 88.0,
+      "p95": 110.0,
+      "max": 114.0
+    },
+    "unsupported_claims_per_first_draft": 0.03
+  },
+  "complete": true
+}

@@ -17,18 +17,29 @@ fetches, LLM timeouts) nests under its parent step instead of appearing as a
 separate trace. Without the langsmith package both fall back to no-ops.
 """
 
+import contextvars
 from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
+
+class _ContextPool(ThreadPoolExecutor):
+    """ThreadPoolExecutor whose tasks run in a copy of the submitter's context, so
+    observability.py's run id / stage reach worker threads (searches, fetches)
+    even when langsmith is not installed."""
+
+    def submit(self, fn, /, *args, **kwargs):
+        return super().submit(contextvars.copy_context().run, fn, *args, **kwargs)
+
+
 try:
     from langsmith import traceable as _traceable
     from langsmith.run_helpers import get_current_run_tree
     from langsmith.utils import ContextThreadPoolExecutor as Pool
 except ImportError:  # tracing unavailable: same API, does nothing
-    _traceable, Pool = None, ThreadPoolExecutor
+    _traceable, Pool = None, _ContextPool
 
     def get_current_run_tree():
         return None

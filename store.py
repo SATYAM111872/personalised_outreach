@@ -46,15 +46,28 @@ CREATE TABLE IF NOT EXISTS review_actions (
     run_id INTEGER, draft_id INTEGER, action TEXT, reason TEXT, at TEXT
 );
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
+CREATE TABLE IF NOT EXISTS llm_calls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id INTEGER, stage INTEGER, at TEXT, purpose TEXT, model TEXT, attempt INTEGER,
+    outcome TEXT, latency REAL, input_tokens INTEGER, output_tokens INTEGER,
+    prompt_chars INTEGER, error TEXT
+);
+CREATE TABLE IF NOT EXISTS tool_calls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id INTEGER, stage INTEGER, at TEXT, tool TEXT, backend TEXT, outcome TEXT,
+    latency REAL, n_results INTEGER, fallbacks INTEGER, detail TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_llm_calls_run ON llm_calls(run_id);
+CREATE INDEX IF NOT EXISTS idx_tool_calls_run ON tool_calls(run_id);
 """
 
-MIGRATIONS = {"runs": {"resolved": "TEXT", "rounds": "INTEGER", "research": "TEXT"},
+MIGRATIONS = {"runs": {"resolved": "TEXT", "rounds": "INTEGER", "research": "TEXT", "obs": "TEXT"},
               "sources": {"bucket": "TEXT", "sim": "REAL", "anchor": "TEXT", "kept": "INTEGER",
                           "round": "INTEGER", "fulltext": "TEXT"},
               "signals": {"round": "INTEGER"},
               "drafts": {"kind": "TEXT"}}
 
-JSON_COLS = {"payload", "source_urls", "check_results", "resolved", "research"}
+JSON_COLS = {"payload", "source_urls", "check_results", "resolved", "research", "obs"}
 
 
 def now_iso():
@@ -215,6 +228,41 @@ def add_review_action(run_id, draft_id, action, reason=""):
 
 def get_review_actions(run_id):
     return _select("SELECT * FROM review_actions WHERE run_id = ? ORDER BY id", (run_id,))
+
+
+# --- observability (see observability.py) -------------------------------------
+LLM_CALL_FIELDS = ("run_id", "stage", "purpose", "model", "attempt", "outcome", "latency",
+                   "input_tokens", "output_tokens", "prompt_chars", "error")
+TOOL_CALL_FIELDS = ("run_id", "stage", "tool", "backend", "outcome", "latency", "n_results",
+                    "fallbacks", "detail")
+
+
+def add_llm_call(rec):
+    return _insert("llm_calls", {"at": now_iso(), **{k: rec.get(k) for k in LLM_CALL_FIELDS}})
+
+
+def add_tool_call(rec):
+    return _insert("tool_calls", {"at": now_iso(), **{k: rec.get(k) for k in TOOL_CALL_FIELDS}})
+
+
+def get_llm_calls(run_id=None):
+    if run_id is None:
+        return _select("SELECT * FROM llm_calls ORDER BY id")
+    return _select("SELECT * FROM llm_calls WHERE run_id = ? ORDER BY id", (run_id,))
+
+
+def get_tool_calls(run_id=None):
+    if run_id is None:
+        return _select("SELECT * FROM tool_calls ORDER BY id")
+    return _select("SELECT * FROM tool_calls WHERE run_id = ? ORDER BY id", (run_id,))
+
+
+def all_drafts():
+    return _select("SELECT * FROM drafts ORDER BY id")
+
+
+def all_review_actions():
+    return _select("SELECT * FROM review_actions ORDER BY id")
 
 
 # --- settings (switches the Dashboard changes; shared with batch.py) ---------

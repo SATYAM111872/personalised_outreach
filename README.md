@@ -49,6 +49,7 @@ The full stage-by-stage behaviour, every query template, every check and every f
 | **New run** | One prospect. Company is required, plus a name, a role or both. Website and pasted notes (e.g. text from a LinkedIn profile) are optional. Shows each stage live, then the review card. |
 | **Batch** | Upload a CSV and run every row. Runs in a background thread on the server, so you can switch pages or close the tab. Live progress, "Stop after current row", "Start at row" for resuming, and a results CSV to download. |
 | **Dashboard** | Every run with its status, hook type and score. Open any run to replay its timeline and review its draft. Also holds the **generic-fallback switch**: when on, a prospect with no usable hook gets a generic, role-based draft (clearly marked) instead of stopping. |
+| **Health** | LLM, search and fetch reliability, latency and tokens; research funnel; draft-check pass rates; rep actions; threshold alerts. See [OBSERVABILITY.md](OBSERVABILITY.md). |
 
 **Batch CSV format:** a header row with `company` (required) and any of `name`, `role`, `website`, `notes`, in any order and any case. Each row needs a name, a role or both. For example:
 
@@ -106,6 +107,7 @@ The command-line batch writes `<input>_results.csv` after every row. Runs are st
 | `store.py` | SQLite storage: runs, stage events, sources, signals, drafts, review actions |
 | `batch.py` | CSV batch runner, shared by the command line and the Batch page |
 | `tracing.py` | Optional LangSmith tracing; does nothing unless enabled in `.env` |
+| `observability.py` | Logs, per-call records (LLM, search, fetch, embedding) and the Health report; see [OBSERVABILITY.md](OBSERVABILITY.md) |
 
 ## About the live demo
 

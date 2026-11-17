@@ -22,14 +22,48 @@ from pydantic import BaseModel, Field
 
 import config as C
 import prompts as PR
+import observability as obs
 import store
-from llm import embeddings, llm
-from search import fetch_paragraphs, search as search_tool
+from llm import embeddings, llm, llm_fallback
+from search import fetch_paragraphs as _fetch_paragraphs, search as _search
 from tracing import Pool, step, tag_current
 
+
+def _observed_search(q):
+    """search.search plus a tool_calls record: backend that answered, latency, backends skipped."""
+    t0 = time.time()
+    try:
+        rows = _search(q)
+    except Exception as e:
+        obs.record_tool(tool="search", outcome="error", latency=round(time.time() - t0, 2), n_results=0,
+                        detail=f"{q['bucket']}: {str(e)[:300]}")
+        raise
+    obs.record_tool(tool="search", backend=rows[0].get("backend") if rows else None,
+                    outcome="ok" if rows else "empty", latency=round(time.time() - t0, 2), n_results=len(rows),
+                    fallbacks=rows[0].get("fallbacks") if rows else None,
+                    detail=(rows[0].get("backend_errors") or "")[:300] if rows else q["bucket"])
+    return rows
+
+
+def _observed_fetch(url):
+    """search.fetch_paragraphs plus a tool_calls record, per host (which sites block or time out)."""
+    t0 = time.time()
+    host = (urlsplit(url or "").hostname or "?").removeprefix("www.")
+    try:
+        paras = _fetch_paragraphs(url)
+    except Exception as e:
+        obs.record_tool(tool="fetch", backend=host, outcome="error", latency=round(time.time() - t0, 2),
+                        n_results=0, detail=f"{type(e).__name__}: {str(e)[:150]}")
+        raise
+    obs.record_tool(tool="fetch", backend=host, outcome="ok" if paras else "empty",
+                    latency=round(time.time() - t0, 2), n_results=len(paras),
+                    detail=f"{sum(map(len, paras))} chars")
+    return paras
+
+
 # Searches and page fetches as tool steps in a LangSmith trace (no-op when tracing is off).
-search_tool = step("search", "tool")(search_tool)
-fetch_paragraphs = step("fetch page", "tool")(fetch_paragraphs)
+search_tool = step("search", "tool")(_observed_search)
+fetch_paragraphs = step("fetch page", "tool")(_observed_fetch)
 
 store.init_db()
 
@@ -114,32 +148,55 @@ class Grounding(BaseModel):
 _llm_pool = Pool(max_workers=4)
 
 
-_TRANSIENT = ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED", "overloaded", "high demand")
+_TRANSIENT = ("503", "429", "UNAVAILABLE", "RESOURCE_EXHAUSTED", "overloaded", "high demand",
+              "timed out", "Timeout", "timeout", "DEADLINE_EXCEEDED")
 
 
 def call_llm(schema, system, user, timeout=C.LLM_TIMEOUT_S):
-    """Structured LLM call with a hard overall timeout. Retries transient
-    overload/rate-limit errors with backoff. Raises StageError otherwise."""
-    chain = llm.with_structured_output(schema)
+    """Structured LLM call with a hard overall deadline. Each attempt is one
+    request (the SDK's own retries are off, see llm.py) with its own request
+    timeout. Overload, rate-limit and timeout errors are retried with backoff;
+    retries go to the fallback model, since a 503 'high demand' usually lasts
+    longer than a few seconds on the same model. Raises StageError otherwise.
+    Every attempt is recorded (observability.record_llm): model, outcome, latency, tokens."""
+    purpose = getattr(schema, "__name__", str(schema))
     deadline = time.time() + timeout
     last = None
     for attempt, backoff in enumerate(C.LLM_RETRY_BACKOFF_S + [None]):
         remaining = deadline - time.time()
         if remaining <= 0:
             break
-        fut = _llm_pool.submit(chain.invoke, [("system", system), ("human", user)])
+        model = llm if attempt == 0 else llm_fallback
+        rec = {"purpose": purpose, "model": getattr(model, "model", None), "attempt": attempt,
+               "prompt_chars": len(system) + len(user)}
+        usage = obs.usage_callback()
+        chain = model.with_structured_output(schema)
+        t0 = time.time()
+        fut = _llm_pool.submit(chain.invoke, [("system", system), ("human", user)],
+                               **({"config": {"callbacks": [usage]}} if usage else {}))
         try:
             out = fut.result(timeout=remaining)
         except FutTimeout:
-            raise StageError(f"LLM timed out after {timeout}s")
-        except Exception as e:  # network, quota, parse errors
+            obs.record_llm(**rec, outcome="deadline", latency=round(time.time() - t0, 2),
+                           error=f"no answer within the {timeout}s deadline")
+            raise StageError(f"LLM timed out after {timeout}s ({attempt + 1} attempt(s); last error: {last})")
+        except Exception as e:  # network, quota, request timeout, parse errors
             last = f"{type(e).__name__}: {str(e)[:300]}"
-            if backoff is not None and any(t in str(e) for t in _TRANSIENT) and time.time() + backoff < deadline:
+            retry = (backoff is not None and any(t in str(e) or t in type(e).__name__ for t in _TRANSIENT)
+                     and time.time() + backoff < deadline)
+            obs.record_llm(**rec, outcome="retry" if retry else "error", latency=round(time.time() - t0, 2),
+                           error=last)
+            if retry:
                 time.sleep(backoff)
                 continue
             raise StageError(f"LLM error: {last}")
+        tokens = {"input_tokens": getattr(usage, "input_tokens", None),
+                  "output_tokens": getattr(usage, "output_tokens", None)}
         if out is None:
+            obs.record_llm(**rec, outcome="empty", latency=round(time.time() - t0, 2),
+                           error="no parseable structured output", **tokens)
             raise StageError("LLM returned no parseable structured output")
+        obs.record_llm(**rec, outcome="ok", latency=round(time.time() - t0, 2), **tokens)
         return out
     raise StageError(f"LLM error after retries: {last}")
 
@@ -166,6 +223,7 @@ class Emitter:
     def start(self, stage, label=None):
         label = label or STAGE_NAMES[stage]
         self._open[stage] = (time.time(), store.now_iso(), label)
+        obs.bind_stage(stage)
         store.update_run(self.run_id, current_stage=stage)
         self._notify({"run_id": self.run_id, "stage": stage, "stage_name": label,
                       "status": "started", "summary": "running...", "payload": None})
@@ -438,6 +496,8 @@ def gather_sources(queries, notes, rank=True, exclude=frozenset()):
             except FutTimeout:
                 errors[qtext] = "timeout"
                 per_query[qtext] = []
+                obs.record_tool(tool="search", outcome="timeout", latency=C.SEARCH_TIMEOUT_S * 4, n_results=0,
+                                detail=f"stage gave up waiting: {qtext[:100]}")
             except Exception as e:
                 errors[qtext] = f"{type(e).__name__}: {e}"[:600]
                 per_query[qtext] = []
@@ -498,7 +558,16 @@ def _embedding_scores(anchors, texts):
         if key not in _anchor_vecs:  # anchors are fixed per process: embed once
             _anchor_vecs[key] = [_unit(v) for v in embeddings.embed_documents(list(anchors))]
         return _anchor_vecs[key], [_unit(v) for v in embeddings.embed_documents(texts)]
-    A, T = _llm_pool.submit(run).result(timeout=C.LLM_TIMEOUT_S)
+    t0 = time.time()
+    try:
+        A, T = _llm_pool.submit(run).result(timeout=C.LLM_TIMEOUT_S)
+    except BaseException as e:
+        obs.record_tool(tool="embedding", backend="gemini-embedding-001", outcome="error",
+                        latency=round(time.time() - t0, 2), n_results=len(texts),
+                        detail=f"{type(e).__name__}: {str(e)[:150]}")
+        raise
+    obs.record_tool(tool="embedding", backend="gemini-embedding-001", outcome="ok",
+                    latency=round(time.time() - t0, 2), n_results=len(texts))
     return [max((sum(x * y for x, y in zip(t, a)), j) for j, a in enumerate(A)) for t in T]
 
 
@@ -1186,11 +1255,14 @@ def run_pipeline(prospect, on_event=None):
     t_run = time.time()
     run_id = store.create_run(p)
     em = Emitter(run_id, on_event)
+    obs.bind_run(run_id)
+    obs.log.info("run started company=%s name=%s role=%s", p["company"], p["name"] or "-", p["role"] or "-")
     tag_current(run_id=run_id, company=p["company"], prospect=p["name"] or None, role=p["role"] or None)
 
     def end(status, error=None):
         store.update_run(run_id, status=status, duration=round(time.time() - t_run, 1), error=error)
         tag_current(status=status, error=error)
+        obs.save_run_summary(run_id, status)
         return run_id
 
     stage = 1
@@ -1313,6 +1385,7 @@ def approve(run_id, subject=None, body=None):
     store.update_draft(d["id"], status="approved")
     store.update_run(run_id, status="approved")
     store.add_review_action(run_id, d["id"], "approve")
+    obs.log.info("review run=%s action=approve", run_id)
     return final_text(d)
 
 
@@ -1338,6 +1411,7 @@ def discard(run_id, reason):
     store.update_draft(d["id"], status="discarded")
     store.update_run(run_id, status="discarded")
     store.add_review_action(run_id, d["id"], "discard", reason)
+    obs.log.info("review run=%s action=discard reason=%s", run_id, reason)
 
 
 @step('regenerate')
@@ -1361,6 +1435,8 @@ def regenerate(run_id, signal_id=None, on_event=None):
     version = max(d["version"] for d in store.get_drafts(run_id)) + 1
     store.update_run(run_id, status="running")
     em = Emitter(run_id, on_event)
+    obs.bind_run(run_id)
+    obs.log.info("regenerate signal=%s", sig_id if sig else "generic")
     t = time.time()
 
     def restore(err):
@@ -1391,6 +1467,7 @@ def regenerate(run_id, signal_id=None, on_event=None):
     store.update_run(run_id, status=status, chosen_signal_id=sig_id,
                      error=run["error"] if sig is None else None,  # keep the "why generic" note
                      duration=round((run["duration"] or 0) + time.time() - t, 1))
+    obs.save_run_summary(run_id, status)
     return status, None
 
 

@@ -221,6 +221,30 @@ HOOK_FRAMING = {
 # ---------------------------------------------------------------------------
 # Timeouts / storage
 # ---------------------------------------------------------------------------
-LLM_TIMEOUT_S = 90               # per call, including retries
-LLM_RETRY_BACKOFF_S = [3, 8]     # waits before retrying a 429/503
+LLM_TIMEOUT_S = 120              # per call_llm(), all attempts and waits included
+LLM_REQUEST_TIMEOUT_S = 40       # one HTTP request to the model; a hung request ends here
+LLM_RETRY_BACKOFF_S = [3, 8]     # waits before retrying a 429/503/timeout (attempts = len + 1)
+# Used for the retries when the main model is overloaded (503 "high demand") or slow.
+# A pinned model, not an alias, from a different capacity pool than the main one.
+LLM_FALLBACK_MODEL = "gemini-3.1-flash-lite"  # "-latest" served gemini-3.5-flash-lite on 2026-11-12
 DB_PATH = "data/runs.db"
+
+# ---------------------------------------------------------------------------
+# Observability (observability.py). Alert thresholds are starting defaults chosen
+# without data, not values from a study: set them after looking at a real batch.
+# ---------------------------------------------------------------------------
+# Eval cost: model name -> (USD per 1M input tokens, USD per 1M output tokens). Empty on purpose:
+# fill from the provider's current price page for the exact models in llm.py / LLM_FALLBACK_MODEL.
+# Without prices the eval reports tokens only.
+MODEL_PRICE_PER_1M = {}
+
+OBS_STUCK_MINUTES = 15           # a run still 'running' after this long is shown as stuck
+OBS_ALERTS = {
+    "llm_error_pct": 10,          # % of LLM attempts that did not succeed
+    "retry_attempt_pct": 15,      # % of LLM attempts that were retries (these go to the fallback model)
+    "search_failed_pct": 20,      # % of search calls where every backend failed
+    "search_empty_pct": 25,       # % of search calls with no results at all
+    "run_failed_pct": 10,
+    "needs_research_pct": 30,
+    "min_runs_for_rate_alerts": 10,   # run-level rates are noise below this many runs
+}

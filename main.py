@@ -1,6 +1,7 @@
 """Streamlit UI. Page 1: New run (input form, live stage timeline, review card).
 Page 2: Batch (upload a CSV, run every row in the background, download results).
 Page 3: Dashboard (counts, run table, replay of any past run).
+Page 4: Health (LLM, search and draft-quality metrics, alerts).
 
 Run:  streamlit run main.py
 """
@@ -15,6 +16,7 @@ import streamlit as st
 import agent
 import batch
 import config as C
+import observability
 import store
 
 st.set_page_config(page_title="Outreach pipeline", layout="wide")
@@ -496,5 +498,67 @@ def page_dashboard():
         review_card(rid)
 
 
-PAGES = {"New run": page_new_run, "Batch": page_batch, "Dashboard": page_dashboard}
+def _table(df, empty="No data yet."):
+    if df is None or len(df) == 0:
+        st.caption(empty)
+    else:
+        st.dataframe(df, hide_index=True, width="stretch")
+
+
+def page_health():
+    st.title("Health")
+    st.caption("Built from the call records in the database: every LLM attempt, search, page fetch and "
+               "embedding call, plus drafts and review actions. Rates are per attempt/call unless noted.")
+    rep = observability.report()
+    if not rep["n_runs"]:
+        st.info("No runs yet.")
+        return
+    for a in observability.alerts(rep):
+        st.warning(a)
+    o = rep["overall"]
+    c = st.columns(5)
+    c[0].metric("Runs", rep["n_runs"])
+    c[1].metric("LLM attempts", o.get("llm_attempts", 0))
+    c[2].metric("LLM error rate", f"{o['llm_error_pct']}%" if o.get("llm_error_pct") is not None else "–")
+    c[3].metric("Search failed", f"{o['search_failed_pct']}%" if o.get("search_failed_pct") is not None else "–")
+    t = rep["tokens_per_run"]
+    c[4].metric("Tokens / run (median)", f"{t['in']:,} in / {t['out']:,} out" if t else "–")
+
+    llm_t, tool_t, qual_t, run_t = st.tabs(["LLM", "Search & fetch", "Draft quality", "Runs"])
+    with llm_t:
+        st.subheader("By model")
+        _table(rep["llm_by_model"], "No LLM calls recorded yet (runs made before this feature have none).")
+        st.subheader("By purpose")
+        _table(rep["llm_by_purpose"])
+        st.subheader("Errors")
+        _table(rep["llm_errors"], "No failed attempts.")
+    with tool_t:
+        st.subheader("By tool and backend")
+        _table(rep["tools"], "No tool calls recorded yet.")
+        st.subheader("Errors")
+        _table(rep["tool_errors"], "No failed calls.")
+        st.subheader("Research funnel (average per run, by round)")
+        _table(rep["funnel"])
+    with qual_t:
+        q = rep["quality"]
+        c = st.columns(2)
+        c[0].metric("Redraft rate", f"{q['redraft_rate']}%" if q["redraft_rate"] is not None else "–",
+                    help="Share of first drafts that failed a check and were redrafted.")
+        c[1].metric("Median edit size", f"{q['edit_size']}%" if q["edit_size"] is not None else "–",
+                    help="Median share of the body changed by the rep before approving, among edited drafts.")
+        st.subheader("First-attempt check results")
+        _table(q["checks"])
+        st.subheader("Rep actions")
+        _table(rep["review"], "No review actions yet.")
+    with run_t:
+        st.subheader("Status")
+        _table(rep["status_mix"])
+        st.subheader("Where failed runs stopped")
+        _table(rep["failure_stages"], "No failed runs.")
+        st.subheader("Stuck runs")
+        _table(rep["stuck"][["id", "created_at", "company", "current_stage"]] if len(rep["stuck"]) else None,
+               "None.")
+
+
+PAGES = {"New run": page_new_run, "Batch": page_batch, "Dashboard": page_dashboard, "Health": page_health}
 PAGES[st.sidebar.radio("Page", list(PAGES))]()

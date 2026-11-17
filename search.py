@@ -6,7 +6,8 @@
    Links are news.google.com redirects to the article.
 3. Bing web RSS (system DNS). Its pubDate is a crawl date, so it is discarded.
 
-Each result: url, title, snippet, published_date (ISO or None), query, origin, backend.
+Each result: url, title, snippet, published_date (ISO or None), query, origin, backend,
+fallbacks (backends tried first and skipped; the first result also carries their errors).
 """
 
 import html
@@ -172,6 +173,9 @@ def search(q):
             errors.append(f"{name}: {type(e).__name__}: {str(e)[:120]}")
             continue
         if rows:
+            for r in rows:  # backends tried first and skipped before this one answered (observability)
+                r["fallbacks"] = len(errors)
+            rows[0]["backend_errors"] = " | ".join(errors)
             return rows
         errors.append(f"{name}: no results")
     if all(e.endswith("no results") or "No results" in e for e in errors):

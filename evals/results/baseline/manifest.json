@@ -1,0 +1,259 @@
+{
+  "label": "baseline",
+  "started_at": "2026-11-17T11:09:32+00:00",
+  "python": "3.10.22",
+  "git_commit": "1550b10",
+  "git_dirty": true,
+  "dataset": "dataset_50.csv",
+  "dataset_sha256": "ee8d13b137346dc5c8aaa9e0c4a24b63fd30fc246aaa31ea721df41dff2832f4",
+  "dataset_rows": 50,
+  "limit": 0,
+  "only": "",
+  "generic_fallback": false,
+  "models": {
+    "llm": "gemini-flash-lite-latest",
+    "llm_fallback": "gemini-3.1-flash-lite",
+    "embedding": "models/gemini-embedding-001"
+  },
+  "file_sha256": {
+    "agent.py": "0e40ce1b874e2b4252817f5ff699d055d8379aef62f005ba457f9aabc459d510",
+    "prompts.py": "e6d7c2cf7b6b6cf5c2d88c7663e4f7869ae07066039e37661860ed3e40518f3e",
+    "config.py": "ba61243738922266ac9cdae8b0d346fefef7b7a7a13e7a01de9d2a685abb789f",
+    "search.py": "9b9823e0588b046635bb7e511eb03bc13046b80f1adb3c00a930ab0af0775888",
+    "llm.py": "5f7b094ada0b05f68db6c5104e8c846ed3062e3a5b54ac0cfab02df8f6bf195c",
+    "store.py": "e6230138b3a34dfc1bfe70d8b6907f22b5106ee0983ea1f262439b3bca7a2ee0",
+    "observability.py": "2d5c002870aa2926875261c1c462f09bafe34a5340c905d0c406a69dec1f0a75"
+  },
+  "config_sha256": "6f0629bac4060a7d66b97ac46543d0058816c02429f4784568dcb73781728fab",
+  "config": {
+    "SELLER_PROFILE": {
+      "product": "Zamp",
+      "one_liner": "A digital workforce for finance operations: AI digital employees that run ongoing finance jobs end to end (AP approvals, invoice processing and audit, purchase requisitions, accounting close, chargebacks) and involve people only when needed.",
+      "function": "finance",
+      "buyers": [
+        "CFO",
+        "Controller",
+        "Chief Accounting Officer",
+        "VP Finance",
+        "Head of Finance Operations",
+        "Head of Accounts Payable",
+        "Head of Procurement",
+        "Head of Shared Services",
+        "Head of Payments / Disputes Operations"
+      ],
+      "problems_solved": [
+        "Slow AP approvals and manual invoice processing that do not scale with volume",
+        "Purchase requisitions stuck in long approval chains",
+        "A month-end accounting close with too many manual touchpoints",
+        "Invoice audit that is slow or outsourced to a costly BPO",
+        "Chargeback and dispute backlogs that risk missing card-network deadlines",
+        "Finance teams that must add headcount every time transaction volume grows"
+      ],
+      "proof_points": [
+        "Reduced Instacart's AP approval times from 2 weeks to 2 days, automating 80% of manual work",
+        "Automated 85% of Amgen's purchase requisitions through approval, cutting turnaround time 60%",
+        "Eliminated 75% of human touchpoints in Block's accounting close process",
+        "Reduced Uber Freight's invoice audit time from 1 day to 1 hour, at 30% lower cost than a BPO",
+        "Filed chargebacks in under 10 minutes per case at Wio, with zero missed network deadlines",
+        "Processed 95%+ of Mindbody's invoices end-to-end, involving humans only when needed"
+      ],
+      "allowed_ctas": [
+        "Worth a 15-minute call next week?",
+        "Want me to send over a one-pager?",
+        "Open to a short demo?"
+      ],
+      "rep_name": "Alex",
+      "sign_off": "Best,\nAlex",
+      "tone": "Direct, plain, no fluff."
+    },
+    "NAME_LOOKUP_QUERIES": [
+      "\"{company}\" {role}",
+      "{role} of {company} linkedin"
+    ],
+    "NAME_LOOKUP_NEWS_QUERIES": [
+      "\"{company}\" {role} appointed OR joins OR named",
+      "\"{company}\" new {role} OR succeeds OR replaces OR \"steps down\""
+    ],
+    "NAME_LOOKUP_SITE_QUERY": "site:{domain} {role} OR leadership OR team",
+    "ROLE_LOOKUP_QUERIES": [
+      "\"{name}\" \"{company}\"",
+      "\"{name}\" {company} title OR role",
+      "\"{name}\" {company} linkedin"
+    ],
+    "ROLE_LOOKUP_NEWS_QUERIES": [
+      "\"{name}\" \"{company}\" appointed OR promoted OR joins OR named"
+    ],
+    "ROLE_LOOKUP_SITE_QUERY": "site:{domain} \"{name}\"",
+    "LOOKUP_RECENT_DAYS": 365,
+    "COMPANY_QUERIES": [
+      "\"{company}\" news",
+      "\"{company}\" funding OR raises OR valuation",
+      "\"{company}\" acquisition OR acquires OR merger OR expansion",
+      "\"{company}\" revenue OR earnings OR growth",
+      "\"{company}\" CFO OR \"chief financial officer\" OR controller appointed",
+      "\"{company}\" hiring {function} OR \"accounts payable\" OR procurement",
+      "\"{company}\" \"accounts payable\" OR invoices OR \"month-end close\" OR procurement",
+      "\"{company}\" \"finance transformation\" OR ERP OR \"shared services\" OR chargebacks"
+    ],
+    "PERSON_QUERIES": [
+      "\"{name}\" {company}",
+      "\"{name}\" {company} interview OR podcast OR keynote",
+      "\"{name}\" {company} appointed OR joins OR promoted",
+      "\"{name}\" {company} finance OR automation OR AI"
+    ],
+    "WEBSITE_QUERY": "site:{domain} news OR announcement OR blog",
+    "TRIGGER_ANCHORS": [
+      "raised a funding round, new investment or higher valuation",
+      "acquired a company or announced a merger",
+      "expanding into new countries, markets or business entities",
+      "strong revenue growth, earnings results or rising transaction volume",
+      "appointed a new CFO, controller or finance leader",
+      "hiring accounts payable, procurement or finance operations staff",
+      "finance transformation, ERP migration or shared services centre",
+      "cost cutting, efficiency programme or restructuring",
+      "rising fraud, chargebacks or payment disputes",
+      "executive talking about finance automation or AI in finance"
+    ],
+    "RESULTS_PER_QUERY": 5,
+    "MAX_SOURCES": 30,
+    "MIN_PERSON_SOURCES": 2,
+    "SEARCH_TIMEOUT_S": 20,
+    "SEARCH_WORKERS": 4,
+    "SNIPPET_CHARS": 750,
+    "FETCH_TOP_N": 4,
+    "FETCH_TIMEOUT_S": 10,
+    "FETCH_MAX_BYTES": 2000000,
+    "FULLTEXT_CHARS": 2500,
+    "FETCH_SKIP_HOSTS": [
+      "news.google.com",
+      "linkedin.com",
+      "facebook.com",
+      "instagram.com",
+      "x.com",
+      "twitter.com",
+      "youtube.com",
+      "tiktok.com",
+      "reddit.com"
+    ],
+    "MAX_RESEARCH_ROUNDS": 3,
+    "FEW_RESULTS": 8,
+    "MAX_GAP_QUERIES": 8,
+    "GAP_QUERIES": {
+      "few_results": [
+        "{company} company",
+        "{company} {domain}",
+        "\"{company}\" about OR \"who we are\" OR customers",
+        "site:{domain} press OR about OR careers OR blog"
+      ],
+      "no_person": [
+        "\"{name}\" \"{role}\"",
+        "\"{name}\" {company} conference OR webinar OR panel OR speaker",
+        "\"{name}\" {company} said OR says OR quoted",
+        "\"{name}\" {company} linkedin"
+      ],
+      "no_relevant": [
+        "\"{company}\" \"finance team\" OR \"finance operations\" OR \"accounting team\"",
+        "\"{company}\" careers accounting OR finance OR controller",
+        "\"{company}\" subsidiary OR \"new entity\" OR \"opens office\" OR \"new market\"",
+        "\"{company}\" layoffs OR restructuring OR \"cost cutting\" OR efficiency",
+        "\"{company}\" \"transaction volume\" OR customers OR orders OR \"record growth\""
+      ]
+    },
+    "LLM_QUERY_MAX": 5,
+    "LLM_QUERY_MAX_CHARS": 150,
+    "QUERY_DUP_JACCARD": 0.6,
+    "SIGNAL_TYPES": [
+      "funding",
+      "hiring",
+      "leadership_change",
+      "product_launch",
+      "expansion",
+      "acquisition",
+      "partnership",
+      "exec_statement",
+      "other"
+    ],
+    "MERGE_MAX_DAYS": 7,
+    "MERGE_MIN_JACCARD": 0.35,
+    "MERGE_ENTITY_TYPES": "{'product_launch', 'acquisition', 'partnership', 'funding'}",
+    "W_RECENCY": 0.6,
+    "W_PERSONAL": 0.4,
+    "RECENCY_BANDS": [
+      [
+        14,
+        1.0
+      ],
+      [
+        60,
+        0.7
+      ],
+      [
+        180,
+        0.4
+      ]
+    ],
+    "UNDATED_T": 0.1,
+    "P_PERSON": 1.0,
+    "P_COMPANY": 0.6,
+    "GATE_MIN_R": 2,
+    "N_RUNNER_UPS": 2,
+    "GENERIC_FALLBACK_DEFAULT": false,
+    "BODY_MIN_WORDS": 60,
+    "BODY_MAX_WORDS": 120,
+    "SUBJECT_MAX_WORDS": 8,
+    "MAX_DRAFT_ATTEMPTS": 2,
+    "BANNED_PHRASES": [
+      "hope this finds you well",
+      "hope this email finds you",
+      "hope you're doing well",
+      "i wanted to reach out",
+      "just reaching out",
+      "just checking in",
+      "touch base",
+      "circle back",
+      "quick question",
+      "i came across your profile",
+      "synergy",
+      "game-changer",
+      "game changer",
+      "revolutionize",
+      "revolutionise",
+      "cutting-edge",
+      "best-in-class",
+      "world-class",
+      "leverage",
+      "low-hanging fruit",
+      "no-brainer"
+    ],
+    "HOOK_FRAMING": {
+      "funding": "Saw {company} just closed {round}; that usually means pressure to {relevant outcome}...",
+      "hiring": "Noticed you're hiring for {role}; that's often a sign {pain} is a priority...",
+      "exec_statement": "Read your comments on {topic} in {outlet}: {short paraphrase}. That's the problem we work on...",
+      "leadership_change": "Congrats on the move to {role}. The first months usually mean {pressure}...",
+      "product_launch": "Saw the {launch}. Scaling that usually means {pain}...",
+      "expansion": "Saw the {expansion}. Scaling that usually means {pain}...",
+      "acquisition": "With {event}, {integration pain} tends to show up next...",
+      "partnership": "With {event}, {integration pain} tends to show up next...",
+      "other": "State the event specifically, then connect it to one problem the seller solves."
+    },
+    "LLM_TIMEOUT_S": 120,
+    "LLM_REQUEST_TIMEOUT_S": 40,
+    "LLM_RETRY_BACKOFF_S": [
+      3,
+      8
+    ],
+    "LLM_FALLBACK_MODEL": "gemini-3.1-flash-lite",
+    "DB_PATH": "data/runs.db",
+    "MODEL_PRICE_PER_1M": {},
+    "OBS_STUCK_MINUTES": 15,
+    "OBS_ALERTS": {
+      "llm_error_pct": 10,
+      "retry_attempt_pct": 15,
+      "search_failed_pct": 20,
+      "search_empty_pct": 25,
+      "run_failed_pct": 10,
+      "needs_research_pct": 30,
+      "min_runs_for_rate_alerts": 10
+    }
+  }
+}
